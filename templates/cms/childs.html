@@ -1,0 +1,14 @@
+{% load thumbnail %}
+
+{% for item in pages_list %}
+	<div class='page__child'>
+		{% thumbnail item.img "300x250" crop="center" as im %}
+			<img src='{{ im.url }}' class='b-page__child__img' alt='{{ item.header }}'>
+		{% empty %}
+			<img src='/static/pages/img/no_photo.png' class='b-page__child__img' alt='{{ item.header }}' title='{{ item.header }}' />
+		{% endthumbnail %}
+		<a href='{{ item.get_absolute_url }}' class='b-page__child__title'>{{ item.header }}</a>
+		<div class='b-page__child__date'>{{ item.created_at|date:"Y.m.d H:i" }}</div>
+		<div class='b-page__child__intro'>{{ item.intro|safe }}</div>
+	</div>
+{% endfor %}

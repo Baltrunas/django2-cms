@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load render %}
+
+
+{% block content %}
+	<div class='page app--cms template--cms_page'>
+		{{ page.group }}
+
+		{% include "cms/group.html" with group=page.group.content %}
+
+		<h1 class='page__header'>{{ page.header|safe }}</h1>
+
+		{% if page.intro %}
+			<div class='page__intro'>{{ page.intro|safe }}</div>
+		{% endif %}
+		{% if page.image %}
+			<img src='{{ page.image.url }}' alt='{{ page.title }}' class='page__image'>
+		{% endif %}
+		<div class='page__text'>{% render page.text %}</div>
+
+
+		{% include "cms/childs.html" %}
+		{% include "cms/paginator.html" %}
+	</div><!-- .page -->
+
+{% endblock %}
+

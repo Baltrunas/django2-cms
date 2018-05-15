@@ -1,0 +1,45 @@
+{% load render %}
+{% spaceless %}
+
+<section class='
+	block
+	block--{{ block_item.slug }}
+	block--id_{{ block_item.id }}
+
+	{# {% if block_item.image %}m-block__with_image{% else %}m-block__without_image{% endif %} #}
+	'
+	{% if block_item.bg %}style='background-image: url({{ block_item.bg.url }})'{% endif %}
+	id='{{ block_item.slug }}'
+	data-id='{{ block_item.id }}'
+>
+{% endspaceless %}
+<div class='block__wrapper'>
+	<div class='block__info'>
+		{% if block_item.title %}
+			{% if forloop.first %}
+				<h1 class='block__title'>{{ block_item.title|safe }}</h1>
+			{% else %}
+				<h2 class='block__title'>{{ block_item.title|safe }}</h2>
+			{% endif %}
+		{% endif %}
+
+		{% if block_item.description %}
+			<h3 class='block__description'>{{ block_item.description|safe }}</h3>
+		{% endif %}
+
+		{% if block_item.text %}
+		<div class='block__text'>
+			{% render block_item.text %}
+		</div>
+		{% endif %}
+	</div>
+	{% if block_item.image %}
+		<img class='block__img' src='{{ block_item.image.url }}' alt='{{ block_item.title }}'>
+	{% endif %}
+
+	{% if block_item.elements %}
+		{% include "cms/elements.html" %}
+	{% endif %}
+</div><!-- block__wrapper -->
+
+</section><!-- .block .block--{{ block_item.slug }} -->

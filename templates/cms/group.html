@@ -1,0 +1,7 @@
+{% for block_item in group %}
+	{% if block_item.template %}
+		{% include block_item.template %}
+	{% else %}
+		{% include "cms/block.html" %}
+	{% endif %}
+{% endfor %}

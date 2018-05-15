@@ -1,0 +1,24 @@
+{% load render %}
+
+<div class='element-list'>
+
+{% for element in block_item.elements.all %}
+	<div class='element element--id_{{ element.id }}'>
+		{% if element.image %}
+			<img src='{{ element.image.url }}' alt='{{ element.title }}' class='element__image'>
+		{% endif %}
+		<div class='element__content'>
+			{% if element.title %}
+				<h3 class='element__title'>{{ element.title|safe }}</h3>
+			{% endif %}
+			{% if element.description %}
+				<big class='element__description'>{{ element.description|safe }}</big>
+			{% endif %}
+			{% if element.text %}
+				<div class='element__text'>{% render element.text %}</div>
+			{% endif %}
+		</div>
+	</div><!-- element -->
+{% endfor %}
+
+</div><!-- .element-list -->
