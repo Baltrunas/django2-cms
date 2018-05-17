@@ -1,4 +1,4 @@
-from .models import Page
+from .models import Page, Tag
 
 
 def page(request):
@@ -7,6 +7,7 @@ def page(request):
 	except:
 		page = None
 	return {
+		'tags': Tag.objects.all(),
 		'page': page,
 		'site': request.site,
 		'url': request.path_info

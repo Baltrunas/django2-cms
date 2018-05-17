@@ -8,7 +8,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse, Http404
 
 
-from .models import Page
+from .models import Page, Tag
 
 
 @csrf_protect

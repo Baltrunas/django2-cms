@@ -83,6 +83,9 @@ class Page(models.Model):
 	def get_absolute_url(self):
 		return self.url
 
+	def public_childs(self):
+		return self.childs.filter(public=True)
+
 	def group(self):
 		groups = {}
 		block_groups = self.blocks.order_by('group').distinct().values_list('group', flat=True)
