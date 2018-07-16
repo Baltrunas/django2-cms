@@ -21,7 +21,7 @@ translator.register(Page, PageTranslationOptions)
 
 
 class BlockTranslationOptions(TranslationOptions):
-	fields = ['title', 'description', 'text']
+	fields = ['title', 'description', 'text', 'url']
 
 translator.register(Block, BlockTranslationOptions)
 
