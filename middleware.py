@@ -46,15 +46,57 @@ class PageMiddleware(object):
 		return response
 
 
-class SwitchLocale(LocaleMiddleware):
-	def process_request(self, request):
-		if hasattr(request.site, 'settings'):
-			language = request.site.settings.language
-		else:
-			language = settings.LANGUAGE_CODE
+class SwitchLocale:
+	def __init__(self, get_response):
+		self.get_response = get_response
 
-		translation.activate(language)
-		request.LANGUAGE_CODE = language
+	def __call__(self, request):
+		LOCALE_SPECIFIC_URL = getattr(settings, 'LOCALE_SPECIFIC_URL', 'domain')
+		LOCALE_DEFAULT = getattr(settings, 'LOCALE_DEFAULT', 'de')
+		LOCALE_EXCLUDE = getattr(settings, 'LOCALE_EXCLUDE', [])
+		LANGUAGES = getattr(settings, 'LANGUAGES')
+
+
+		if LOCALE_SPECIFIC_URL == 'domain':
+			if hasattr(request.site, 'settings'):
+				language = request.site.settings.language
+			else:
+				language = settings.LANGUAGE_CODE
+
+			translation.activate(language)
+			request.LANGUAGE_CODE = language
+
+			response = self.get_response(request)
+
+
+		elif LOCALE_SPECIFIC_URL == 'dir':
+			url = request.path_info
+			lang = LOCALE_DEFAULT
+
+			replace = True
+			for EX_URL in LOCALE_EXCLUDE:
+				if url.startswith(EX_URL):
+					replace = False
+
+			if replace:
+				#  def withoud dir
+				for lk in LANGUAGES:
+					if url.startswith('/' + lk[0] + '/'):
+						lang = lk[0]
+						request.path_info = url[3:]
+
+				translation.activate(lang)
+				request.LANGUAGE_CODE = lang
+
+				response = self.get_response(request)
+
+				regex = re.compile(b"href='", re.IGNORECASE)
+				response.content = regex.sub(b"href='/" + bytes(lang, 'utf-8'), response.content)
+			else:
+				response = self.get_response(request)
+
+		return response
+
 
 
 class Redirects(object):
