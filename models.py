@@ -153,7 +153,7 @@ class Block(models.Model):
 	text = models.TextField(_('Text'), blank=True, null=True)
 	image = models.FileField(_('Image'), upload_to=upload_to, blank=True, null=True)
 	bg = models.FileField(_('Background'), upload_to=upload_to, blank=True, null=True)
-	url = models.CharField(_('URL'), max_length=1024, default='#')
+	url = models.CharField(_('URL'), max_length=1024, default='#', blank=True, null=True)
 
 	pages = models.ManyToManyField(Page, verbose_name=_('Pages'), related_name='blocks', blank=True)
 

@@ -81,7 +81,7 @@ class SwitchLocale:
 			if replace:
 				#  def withoud dir
 				for lk in LANGUAGES:
-					if url.startswith('/' + lk[0] + '/'):
+					if url.startswith('/' + lk[0] + '/') and lk[0] != LOCALE_DEFAULT:
 						lang = lk[0]
 						request.path_info = url[3:]
 
@@ -90,8 +90,17 @@ class SwitchLocale:
 
 				response = self.get_response(request)
 
-				regex = re.compile(b"href='", re.IGNORECASE)
-				response.content = regex.sub(b"href='/" + bytes(lang, 'utf-8'), response.content)
+				if lang != LOCALE_DEFAULT:
+					response.content = re.sub(b"<a (.*?) (href)='/", rb"<a \1 href='/" + bytes(lang + '/', 'utf-8'), response.content)
+					response.content = re.sub(b'<a (.*?) (href)="/', rb'<a \1 href="/' + bytes(lang + '/', 'utf-8'), response.content)
+
+				for lk in LANGUAGES:
+					lng = bytes(lk[0], 'utf-8')
+					if lk[0] == LOCALE_DEFAULT:
+						response.content = re.sub(b'<a (.*?) href="lang-' + lng + b'"', rb'<a \1 href="' + bytes(request.path_info, 'utf-8') + b'"', response.content)
+					else:
+						response.content = re.sub(b'<a (.*?) href="lang-' + lng + b'"', rb'<a \1 href="/' + lng + bytes(request.path_info, 'utf-8') + b'"', response.content)
+
 			else:
 				response = self.get_response(request)
 
