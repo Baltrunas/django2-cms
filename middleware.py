@@ -96,10 +96,14 @@ class SwitchLocale:
 
 				for lk in LANGUAGES:
 					lng = bytes(lk[0], 'utf-8')
-					if lk[0] == LOCALE_DEFAULT:
-						response.content = re.sub(b'<a (.*?) href="lang-' + lng + b'"', rb'<a \1 href="' + bytes(request.path_info, 'utf-8') + b'"', response.content)
+					if request.GET.urlencode():
+						rget = bytes('?' + request.GET.urlencode(), 'utf-8')
 					else:
-						response.content = re.sub(b'<a (.*?) href="lang-' + lng + b'"', rb'<a \1 href="/' + lng + bytes(request.path_info, 'utf-8') + b'"', response.content)
+						rget = b''
+					if lk[0] == LOCALE_DEFAULT:
+						response.content = re.sub(b'<a (.*?) href="lang-' + lng + b'"', rb'<a \1 href="' + bytes(request.path_info, 'utf-8') + b'"' + rget, response.content)
+					else:
+						response.content = re.sub(b'<a (.*?) href="lang-' + lng + b'"', rb'<a \1 href="/' + lng + bytes(request.path_info, 'utf-8') + b'"' + rget, response.content)
 
 			else:
 				response = self.get_response(request)
