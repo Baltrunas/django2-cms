@@ -1,0 +1,13 @@
+{% load i18n %}
+
+{% if page.public_media %}
+	<div class="media">
+		<h3 class="media__title">{% trans "Download" %}</h3>
+
+		{% for media in page.public_media %}
+			<a class="media-item" href="{{ media.doc.url }}" title="{{ media.description }}">
+				{{ media.name }}
+			</a>
+		{% endfor %}
+	</div>
+{% endif %}

@@ -86,6 +86,10 @@ class Page(models.Model):
 	def public_childs(self):
 		return self.childs.filter(public=True)
 
+	def public_media(self):
+		return self.media.filter(public=True)
+
+
 	def group(self):
 		groups = {}
 		block_groups = self.blocks.order_by('group').distinct().values_list('group', flat=True)
@@ -202,6 +206,26 @@ class Element(models.Model):
 		ordering = ['sorting']
 		verbose_name = _('Element')
 		verbose_name_plural = _('Elements')
+
+
+class Media(models.Model):
+	page = models.ForeignKey(Page, verbose_name=_('Page'), related_name='media', on_delete=models.CASCADE)
+
+	name = models.CharField(_('Name'), max_length=128)
+	description = models.CharField(_('Description'), max_length=2048, blank=True, null=True)
+	doc = models.FileField(_('Document'), upload_to=upload_to, blank=True, null=True)
+	sorting = models.PositiveIntegerField(_('Sorting'), default=500)
+	public = models.BooleanField(_('Public'), default=True)
+	created_at = models.DateTimeField(_('Created At'), auto_now_add=True)
+	updated_at = models.DateTimeField(_('Updated At'), auto_now=True)
+
+	def __str__(self):
+		return self.name
+
+	class Meta:
+		ordering = ['sorting']
+		verbose_name = _('Media')
+		verbose_name_plural = _('Media')
 
 
 class Redirect(models.Model):

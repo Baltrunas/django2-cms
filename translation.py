@@ -6,6 +6,7 @@ from .models import Tag
 from .models import Page
 from .models import Block
 from .models import Element
+from .models import Media
 
 
 class TagTranslationOptions(TranslationOptions):
@@ -32,6 +33,12 @@ class ElementTranslationOptions(TranslationOptions):
 translator.register(Element, ElementTranslationOptions)
 
 
+class MediaTranslationOptions(TranslationOptions):
+	fields = ['name', 'description', 'doc']
+
+translator.register(Media, MediaTranslationOptions)
+
+
 from modeltranslation.admin import TranslationAdmin
 from django.contrib import admin
 from django.utils.translation import ugettext as _
@@ -39,11 +46,20 @@ from django.db import models
 from django import forms
 
 
+
+class MediaInline(admin.StackedInline):
+	model = Media
+	verbose_name = _('Media')
+	verbose_name_plural = _('Media')
+	extra = 1
+
+
 class PageAdmin(TranslationAdmin):
 	list_display = ['__str__', 'url', 'public']
 	search_fields = ['title', 'slug', 'url', 'public', 'text']
 	list_filter = ['public', 'sites', 'parent']
 	list_editable = ['public']
+	inlines = [MediaInline]
 	# save_as = True
 
 

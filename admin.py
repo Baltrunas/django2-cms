@@ -7,7 +7,7 @@ from django.db import models
 
 from modeltranslation.admin import TranslationAdmin
 
-from .models import Tag, Page, Block, Element, Settings, Redirect, Variable
+from .models import Tag, Page, Block, Element, Media, Settings, Redirect, Variable
 
 
 class TagAdmin(admin.ModelAdmin):
@@ -17,11 +17,19 @@ class TagAdmin(admin.ModelAdmin):
 admin.site.register(Tag, TagAdmin)
 
 
+class MediaInline(admin.StackedInline):
+	model = Media
+	verbose_name = _('Media')
+	verbose_name_plural = _('Media')
+	extra = 1
+
+
 class PageAdmin(admin.ModelAdmin):
 	list_display = ['__str__', 'url', 'public']
 	search_fields = ['title', 'slug', 'url', 'public', 'text']
 	list_filter = ['public', 'sites', 'parent']
 	list_editable = ['public']
+	inlines = [MediaInline]
 	# save_as = True
 
 
