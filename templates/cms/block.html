@@ -37,7 +37,7 @@
 		<img class='block__img' src='{{ block_item.image.url }}' alt='{{ block_item.title }}'>
 	{% endif %}
 
-	{% if block_item.elements %}
+	{% if block_item.public_elements %}
 		{% include "cms/elements.html" %}
 	{% endif %}
 </div><!-- block__wrapper -->
