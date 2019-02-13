@@ -5,7 +5,7 @@
 {% for element in block_item.public_elements.all %}
 	<div class='element element--id_{{ element.id }}'>
 		{% if element.image %}
-			<img src='{{ element.image.url }}' alt='{{ element.title }}' class='element__image'>
+			<img src='{{ element.image.url }}' alt='{{ element.title }}' class='element__img'>
 		{% endif %}
 		<div class='element__content'>
 			{% if element.title %}

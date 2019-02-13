@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 from django import forms
 from django.db import models
 
-from modeltranslation.admin import TranslationAdmin
+# from modeltranslation.admin import TranslationAdmin
 
 from .models import Tag, Page, Block, Element, Media, Settings, Redirect, Variable
 

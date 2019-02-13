@@ -5,8 +5,6 @@
 
 {% block content %}
 	<div class='page app--cms template--cms_page'>
-		{{ page.group }}
-
 		{% include "cms/group.html" with group=page.group.content %}
 
 		<h1 class='page__header'>{{ page.header|safe }}</h1>
